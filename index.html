@@ -3,11 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- <link rel="icon" href="x.png" type="image/png">
-<link rel="apple-touch-icon" href="x.png"> -->
-<link rel="icon" href="x.ico" type="image/x-icon">
-<link rel="apple-touch-icon" href="x.png">
-
+    <link rel="icon" href="x.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="x.png">
     <title>คำนวณรายจ่าย</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
@@ -91,7 +88,7 @@
         h4 {
             font-weight: 700;
             margin-bottom: 10px;
-            text-align:  center;
+            text-align: center;
         }
     </style>
 </head>
@@ -100,26 +97,20 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card p-4">
-                        <h4>คำนวณรายจ่าย</h4><br>
-                <div class="btn-container">
-                        <!-- ปุ่มเพิ่มข้อมูล -->
-                        <button class="btn btn-primary btn-custom  w-100" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
+                    <h4>คำนวณรายจ่าย</h4><br>
+                    <div class="btn-container">
+                        <button class="btn btn-primary btn-custom w-100" data-bs-toggle="modal" data-bs-target="#addExpenseModal">
                             <i class="fas fa-plus"></i> เพิ่มข้อมูลรายจ่าย
                         </button>
-                        
-                        <!-- ปุ่มแสดงรายการรายจ่าย -->
-                        <button class="btn btn-info btn-custom  w-100" onclick="showExpenses()">
+                        <button class="btn btn-info btn-custom w-100" onclick="showExpenses()">
                             <i class="fas fa-list"></i> รายการรายจ่าย
                         </button>
                     </div>
                     <div class="btn-container">
-                        <!-- ปุ่มแสดงกราฟ -->
-                        <button class="btn btn-warning btn-custom  w-100" onclick="showGraph()">
+                        <button class="btn btn-warning btn-custom w-100" onclick="showGraph()">
                             <i class="fas fa-chart-bar"></i> กราฟ
                         </button>
-                        
-                        <!-- ปุ่มดาวน์โหลด Excel -->
-                        <button class="btn btn-success btn-custom  w-100" onclick="downloadExcel()">
+                        <button class="btn btn-success btn-custom w-100" onclick="downloadExcel()">
                             <i class="fas fa-download"></i> ดาวน์โหลด Excel
                         </button>
                     </div>
@@ -137,12 +128,20 @@
                                         <div class="mb-3">
                                             <label for="familyMember" class="form-label">ชื่อสมาชิก</label>
                                             <select class="form-control" id="familyMember" required>
-                                                <option value="แคท" >แคท</option>
+                                                <option value="แคท">แคท</option>
                                                 <option value="บาส">บาส</option>
-                                       
                                             </select>
                                         </div>
-                                        
+                                        <div class="mb-3">
+                                            <label class="form-label">หมวดหมู่ค่าใช้จ่าย</label>
+                                            <select class="form-control" id="expenseCategoryType" required>
+                                                <option value="อาหาร">อาหาร</option>
+                                                <option value="ของใช้ในบ้าน">ของใช้ในบ้าน</option>
+                                                <option value="ของใช้ส่วนตัว">ของใช้ส่วนตัว</option>
+                                                <option value="ค่าเดินทาง">ค่าเดินทาง</option>
+                                                <option value="อื่นๆ">อื่นๆ</option>
+                                            </select>
+                                        </div>
                                         <div class="mb-3">
                                             <label for="expenseType" class="form-label">รายการ</label>
                                             <input type="text" class="form-control" id="expenseType" required>
@@ -150,13 +149,6 @@
                                         <div class="mb-3">
                                             <label for="expense" class="form-label">จำนวนเงิน (บาท)</label>
                                             <input type="number" class="form-control" id="expense" required>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">ประเภทค่าใช้จ่าย</label>
-                                            <select class="form-control" id="expenseCategory" required>
-                                                <option value="separate">แยก</option>
-                                                <option value="shared">รวม</option>
-                                            </select>
                                         </div>
                                         <button type="submit" class="btn btn-primary w-100">
                                             <i class="fas fa-plus"></i> เพิ่มรายจ่าย
@@ -177,7 +169,7 @@
                                         <th>ชื่อสมาชิก</th>
                                         <th>รายการ</th>
                                         <th>จำนวนเงิน (บาท)</th>
-                                        <th>ประเภท</th>
+                                        <th>หมวดหมู่</th>
                                         <th>วันที่บันทึก</th>
                                         <th>การจัดการ</th>
                                     </tr>
@@ -191,7 +183,10 @@
                     <div id="expenseGraph" class="d-none">
                         <canvas id="expenseChart" class="mt-3"></canvas>
                     </div>
-
+                    <h5 class="text-center text-muted">ยอดใช้จ่ายของแต่ละคน</h5>
+                    <div id="personSummary" class="d-flex justify-content-center mb-3">
+                        <!-- จะแสดงยอดใช้จ่ายของแต่ละคนที่นี่ -->
+                    </div>
                     <!-- ส่วนสำหรับยอดรวม -->
                     <hr>
                     <h4 class="text-center">ยอดรวม: <span id="totalExpense">0</span> บาท</h4>
@@ -200,19 +195,18 @@
                 <button type="button" class="btn btn-danger w-100 mt-3" onclick="clearAllExpenses()">
                     <i class="fas fa-trash-alt"></i> ลบทั้งหมด
                 </button>
-                
             </div>
         </div>
     </div>
 
     <script>
         function clearAllExpenses() {
-    if (confirm("คุณแน่ใจว่าจะลบข้อมูลทั้งหมด?")) {
-        expenses = [];
-        localStorage.removeItem('expenses');
-        updateUI();
-    }
-}
+            if (confirm("คุณแน่ใจว่าจะลบข้อมูลทั้งหมด?")) {
+                expenses = [];
+                localStorage.removeItem('expenses');
+                updateUI();
+            }
+        }
 
         const expenseForm = document.getElementById('expenseForm');
         const expenseTableBody = document.getElementById('expenseTableBody');
@@ -228,44 +222,44 @@
             const member = document.getElementById('familyMember').value;
             const type = document.getElementById('expenseType').value;
             const expense = parseFloat(document.getElementById('expense').value);
-            const category = document.getElementById('expenseCategory').value;
-            const date = new Date().toLocaleString();
-            
-            if (editIndex >= 0) {
-                expenses[editIndex] = { member, type, expense, category, date };
-                editIndex = -1;
+            const categoryType = document.getElementById('expenseCategoryType').value;
+
+            if (editIndex > -1) {
+                expenses[editIndex] = { member, type, expense, categoryType, date: new Date().toLocaleDateString() };
             } else {
-                expenses.push({ member, type, expense, category, date });
+                expenses.push({ member, type, expense, categoryType, date: new Date().toLocaleDateString() });
             }
-            
+
             localStorage.setItem('expenses', JSON.stringify(expenses));
             updateUI();
             expenseForm.reset();
-            document.querySelector('[data-bs-dismiss="modal"]').click();
+            $('#addExpenseModal').modal('hide');
+            editIndex = -1;
         });
-
-        function showExpenses() {
-            document.getElementById('expenseList').classList.remove('d-none');
-            document.getElementById('expenseGraph').classList.add('d-none');
-            updateUI();
-        }
-
-        function showGraph() {
-            document.getElementById('expenseGraph').classList.remove('d-none');
-            document.getElementById('expenseList').classList.add('d-none');
-            updateChart();
-        }
 
         function updateUI() {
             expenseTableBody.innerHTML = '';
             let total = 0;
+            let totalPerPerson = {};
+            let totalPerCategory = {};
+
             expenses.forEach((item, index) => {
                 total += item.expense;
+                if (!totalPerPerson[item.member]) {
+                    totalPerPerson[item.member] = 0;
+                }
+                totalPerPerson[item.member] += item.expense;
+
+                if (!totalPerCategory[item.categoryType]) {
+                    totalPerCategory[item.categoryType] = 0;
+                }
+                totalPerCategory[item.categoryType] += item.expense;
+
                 const row = `<tr>
                                 <td>${item.member}</td>
                                 <td>${item.type}</td>
                                 <td>${item.expense}</td>
-                                <td>${item.category === 'shared' ? 'รวม' : 'แยก'}</td>
+                                <td>${item.categoryType}</td>
                                 <td>${item.date}</td>
                                 <td>
                                     <button class="btn btn-warning btn-edit" onclick="editExpense(${index})"><i class="fas fa-edit"></i> แก้ไข</button>
@@ -274,59 +268,132 @@
                             </tr>`;
                 expenseTableBody.innerHTML += row;
             });
+
             totalExpense.textContent = total;
             const uniqueMembers = new Set(expenses.map(item => item.member));
             perPerson.textContent = uniqueMembers.size > 0 ? (total / uniqueMembers.size).toFixed(2) : 0;
+
+            renderChart(totalPerCategory); // Update chart
         }
 
-        function editExpense(index) {
-            const expense = expenses[index];
-            editIndex = index;
-            document.getElementById('familyMember').value = expense.member;
-            document.getElementById('expenseType').value = expense.type;
-            document.getElementById('expense').value = expense.expense;
-            document.getElementById('expenseCategory').value = expense.category;
-            document.querySelector('[data-bs-toggle="modal"]').click();
-        }
+        function renderChart(data) {
+            if (expenseChart) {
+                expenseChart.destroy();
+            }
 
-        function deleteExpense(index) {
-            expenses.splice(index, 1);
-            localStorage.setItem('expenses', JSON.stringify(expenses));
-            updateUI();
-        }
-
-        function updateChart() {
-            const summary = expenses.reduce((acc, item) => {
-                acc[item.type] = (acc[item.type] || 0) + item.expense;
-                return acc;
-            }, {});
-            if (expenseChart) expenseChart.destroy();
             expenseChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: Object.keys(summary),
+                    labels: Object.keys(data),
                     datasets: [{
-                        label: 'ค่าใช้จ่าย (บาท)',
-                        data: Object.values(summary),
-                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
+                        label: 'ยอดใช้จ่ายตามหมวดหมู่',
+                        data: Object.values(data),
+                        backgroundColor: '#0d6efd',
+                        borderColor: '#0d6efd',
                         borderWidth: 1
                     }]
                 },
                 options: {
-                    responsive: true,
-                    scales: { y: { beginAtZero: true } }
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
                 }
             });
+        }
+
+        function showExpenses() {
+            document.getElementById('expenseList').classList.remove('d-none');
+            document.getElementById('expenseGraph').classList.add('d-none');
+        }
+
+        function showGraph() {
+            document.getElementById('expenseList').classList.add('d-none');
+            document.getElementById('expenseGraph').classList.remove('d-none');
+        }
+
+        function deleteExpense(index) {
+            if (confirm('คุณแน่ใจว่าจะลบรายการนี้?')) {
+                expenses.splice(index, 1);
+                localStorage.setItem('expenses', JSON.stringify(expenses));
+                updateUI();
+            }
+        }
+
+        function editExpense(index) {
+            const expense = expenses[index];
+            document.getElementById('familyMember').value = expense.member;
+            document.getElementById('expenseType').value = expense.type;
+            document.getElementById('expense').value = expense.expense;
+            document.getElementById('expenseCategoryType').value = expense.categoryType;
+            editIndex = index;
+            $('#addExpenseModal').modal('show');
         }
 
         function downloadExcel() {
             const ws = XLSX.utils.json_to_sheet(expenses);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Expenses');
-            XLSX.writeFile(wb, 'Expenses.xlsx');
+            XLSX.utils.book_append_sheet(wb, ws, 'รายจ่าย');
+            XLSX.writeFile(wb, 'รายจ่าย.xlsx');
         }
+
+        updateUI(); // เรียกใช้งานเมื่อโหลดหน้าหรือเริ่มต้น
+
+        function showTotalAndGraph() {
+    // คำนวณยอดรวมของทุกคน
+    let totalPerPerson = {};
+    expenses.forEach(item => {
+        if (!totalPerPerson[item.member]) {
+            totalPerPerson[item.member] = 0;
+        }
+        totalPerPerson[item.member] += item.expense;
+    });
+
+    // อัปเดต UI โดยแสดงยอดรวมของแต่ละคน
+    const personSummary = document.getElementById('personSummary');
+    personSummary.innerHTML = '';
+    for (let person in totalPerPerson) {
+        personSummary.innerHTML += `
+            <div class="p-2">
+                <strong>${person}</strong>: ${totalPerPerson[person]} บาท
+            </div>
+        `;
+    }
+
+    // แสดงกราฟยอดรวมของแต่ละคน
+    renderChartForPerson(totalPerPerson);
+}
+
+function renderChartForPerson(data) {
+    if (expenseChart) {
+        expenseChart.destroy();
+    }
+
+    expenseChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(data),
+            datasets: [{
+                label: 'ยอดใช้จ่ายของแต่ละคน',
+                data: Object.values(data),
+                backgroundColor: '#28a745',
+                borderColor: '#28a745',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+}
+
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
